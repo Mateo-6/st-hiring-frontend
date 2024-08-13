@@ -8,7 +8,7 @@ const Span = styled.span<PageContainerProps>`
   cursor: pointer;
   padding: 10px;
   &:hover {
-    color: #1e90ff;
+    color: #afafaf;
   }
   display: ${(props) => (props.isVisible ? 'block' : 'none')};
 `;

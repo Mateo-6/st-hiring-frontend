@@ -1,6 +1,10 @@
 import React, { useEffect, memo, useState } from "react"
 import to from "await-to-js"
 
+// Redux
+import { useAppDispatch, useAppSelector } from "../../hooks/store";
+import { saveNewEvents } from "../../store/reducers/eventSlice";
+
 // Material Components
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -13,7 +17,7 @@ import TableRow from '@mui/material/TableRow';
 
 // Services
 import { getEvents } from "../../services/events/event-service" 
-import { TEvent } from "./event";
+import { IEvent } from "../../models/event";
 
 interface Column {
   id: 'id' | 'name' | 'location' | 'description';
@@ -29,10 +33,14 @@ const columns: readonly Column[] = [
 ];
 
 export const EventPageMemo = memo(function EventPage () {
+  // Redux
+  const dispatch = useAppDispatch();
+  const events = useAppSelector((state) => state.events);
+
   // States
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [events, setEvents] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  // const [events, setEvents] = useState([]);
 
   // Logic
   const getEventService = async () => {
@@ -42,7 +50,7 @@ export const EventPageMemo = memo(function EventPage () {
       return;
     }
     const { data } = response;
-    setEvents(data);
+    dispatch(saveNewEvents(data));
   }
 
   const handleChangePage = (_event: unknown, newPage: number) => {
@@ -73,23 +81,23 @@ export const EventPageMemo = memo(function EventPage () {
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
-                    style={{ minWidth: column.minWidth }}
+                    style={{ minWidth: column.minWidth, backgroundColor: '#606060', color: '#fff'}}
                   >
                     <strong>{column.label}</strong>
                   </TableCell>
                 ))}
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody style={{ backgroundColor: '#393939' }}>
               {events
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((event: TEvent) => {
+                .map((event: IEvent) => {
                   return (
                     <TableRow hover role="checkbox" tabIndex={-1} key={event.id}>
                       {columns.map((column) => {
                         const value = event[column.id];
                         return (
-                          <TableCell key={column.id}>
+                          <TableCell key={column.id} style={{ color: '#fff' }}>
                             {value}
                           </TableCell>
                         );
@@ -100,7 +108,8 @@ export const EventPageMemo = memo(function EventPage () {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
+        <TablePagination 
+          style={{ backgroundColor: '#606060', color: '#fff' }}
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
           count={events.length}
