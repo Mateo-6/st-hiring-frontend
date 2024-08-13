@@ -1,3 +1,5 @@
+import { Layout } from "./layout/layout";
+
 function App() {
   return (
     <div
@@ -10,7 +12,7 @@ function App() {
         flexDirection: "column",
       }}
     >
-      <h1>See Tickets </h1>
+      <h1><Layout/></h1>
       <div className="card">
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
