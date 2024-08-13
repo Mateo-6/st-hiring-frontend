@@ -12,12 +12,8 @@ function App() {
         flexDirection: "column",
       }}
     >
-      <h1><Layout/></h1>
-      <div className="card">
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
+      <h1>See Tickets Challange</h1>
+      <Layout/>
     </div>
   );
 }
