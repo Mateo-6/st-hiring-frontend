@@ -18,6 +18,7 @@ import TableRow from '@mui/material/TableRow';
 // Services
 import { getEvents } from "../../services/events/event-service" 
 import { IEvent } from "../../models/event";
+import { CircularProgress } from "@mui/material";
 
 interface Column {
   id: 'id' | 'name' | 'location' | 'description';
@@ -40,7 +41,6 @@ export const EventPageMemo = memo(function EventPage () {
   // States
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  // const [events, setEvents] = useState([]);
 
   // Logic
   const getEventService = async () => {
@@ -89,22 +89,32 @@ export const EventPageMemo = memo(function EventPage () {
               </TableRow>
             </TableHead>
             <TableBody style={{ backgroundColor: '#393939' }}>
-              {events
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((event: IEvent) => {
-                  return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={event.id}>
-                      {columns.map((column) => {
-                        const value = event[column.id];
-                        return (
-                          <TableCell key={column.id} style={{ color: '#fff' }}>
-                            {value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
+              {
+                events.length > 1 
+                ? 
+                  events
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((event: IEvent, i: number) => {
+                      return (
+                        <TableRow hover role="checkbox" tabIndex={-1} key={i}>
+                          {columns.map((column) => {
+                            const value = event[column.id];
+                            return (
+                              <TableCell key={column.id} style={{ color: '#fff' }}>
+                                {value}
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                      );
+                  })
+                : 
+                <TableRow>
+                  <TableCell colSpan={4} align='center'>
+                    <CircularProgress />
+                  </TableCell>
+                </TableRow>
+              }
             </TableBody>
           </Table>
         </TableContainer>

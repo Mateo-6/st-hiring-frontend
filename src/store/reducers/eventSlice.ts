@@ -11,7 +11,7 @@ export const eventsSlice = createSlice({
   name: 'events',
   initialState: getInitialState(),
   reducers: {
-    saveNewEvents(state, action: PayloadAction<IEvent[]>) {
+    saveNewEvents(_state, action: PayloadAction<IEvent[]>) {
       return action.payload;
     },
   },
